@@ -37,5 +37,5 @@ services:
     staticPublishPath: build
     autoDeploy: true
     envVars:
-      - key: REACT_APP_API_URL
+      - key: VITE_SERVER_URL
         value: https://ai-ticket-backend.onrender.com
