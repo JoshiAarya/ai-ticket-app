@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: ai-ticket-backend
+    env: node
+    rootDir: ai-ticket-assistant
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: MONGO_URI
+        value: ""
+      - key: JWT_SECRET
+        value: ""
+      - key: MAILTRAP_SMTP_HOST
+        value: ""
+      - key: MAILTRAP_SMTP_PORT
+        value: ""
+      - key: MAILTRAP_SMTP_USER
+        value: ""
+      - key: MAILTRAP_SMTP_PASS
+        value: ""
+      - key: GEMINI_API_KEY
+        value: ""
+      - key: INNGEST_EVENT_KEY
+        value: ""
+      - key: APP_URL
+        value: https://ai-ticket-backend.onrender.com
+      - key: CLIENT_ORIGIN
+        value: https://ai-ticket-frontend.onrender.com
+      - key: PORT
+        value: 3000
+
+  - type: static
+    name: ai-ticket-frontend
+    rootDir: ai-ticket-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    autoDeploy: true
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://ai-ticket-backend.onrender.com
