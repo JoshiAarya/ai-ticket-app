@@ -30,8 +30,9 @@ services:
       - key: PORT
         value: 3000
 
-  - type: static
+  - type: web
     name: ai-ticket-frontend
+    env: static
     rootDir: ai-ticket-frontend
     buildCommand: npm install && npm run build
     staticPublishPath: build
