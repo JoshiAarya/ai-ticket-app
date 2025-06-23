@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/navbar.jsx";
+import Navbar from "../components/Navbar.jsx";
 
 export default function Tickets() {
   const [form, setForm] = useState({ title: "", description: "" });
