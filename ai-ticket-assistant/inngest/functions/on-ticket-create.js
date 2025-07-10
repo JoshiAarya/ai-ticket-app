@@ -24,16 +24,12 @@ export const onTicketCreated = inngest.createFunction(
       });
 
       await step.run("update-ticket-status", async () => {
-        console.log("[Inngest] Step: update-ticket-status", ticket._id);
         await Ticket.findByIdAndUpdate(ticket._id, { status: "TODO" });
       });
 
-      console.log("[Inngest] Step: analyzeTicket (AI)");
       const aiResponse = await analyzeTicket(ticket);
-      console.log("[Inngest] AI response:", aiResponse);
 
       const relatedskills = await step.run("ai-processing", async () => {
-        console.log("[Inngest] Step: ai-processing");
         let skills = [];
         if (aiResponse) {
           await Ticket.findByIdAndUpdate(ticket._id, {
@@ -50,7 +46,6 @@ export const onTicketCreated = inngest.createFunction(
       });
 
       const moderator = await step.run("assign-moderator", async () => {
-        console.log("[Inngest] Step: assign-moderator", relatedskills);
         let user = await User.findOne({
           role: "moderator",
           skills: {
@@ -72,7 +67,6 @@ export const onTicketCreated = inngest.createFunction(
       });
 
       await step.run("send-email-notification", async () => {
-        console.log("[Inngest] Step: send-email-notification", moderator?.email);
         if (moderator) {
           const finalTicket = await Ticket.findById(ticket._id);
           await sendMail(
@@ -83,7 +77,6 @@ export const onTicketCreated = inngest.createFunction(
         }
       });
 
-      console.log("[Inngest] on-ticket-created function completed successfully");
       return { success: true };
     } catch (err) {
       console.error("❌ Error running the step", err.message, err);

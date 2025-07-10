@@ -27,8 +27,6 @@ IMPORTANT:
   "relatedSkills": ["skill1", "skill2"]
 }`,
     });
-
-    console.log("[AI] Analyzing ticket:", { title: ticket.title, description: ticket.description });
     
     const response = await supportAgent.run(
       `Analyze this support ticket and return ONLY a JSON object with no extra text:
@@ -39,7 +37,6 @@ Description: ${ticket.description}
 Remember: Return ONLY the raw JSON object with no markdown, no code fences, no extra text.`
     );
 
-    console.log("[AI] Full response structure:", JSON.stringify(response, null, 2));
     
     // Check if response has the expected structure
     if (!response || !response.output || !Array.isArray(response.output) || response.output.length === 0) {
@@ -47,8 +44,6 @@ Remember: Return ONLY the raw JSON object with no markdown, no code fences, no e
     }
 
     const firstOutput = response.output[0];
-    console.log("[AI] First output:", JSON.stringify(firstOutput, null, 2));
-
     // Try different possible response formats
     let raw = null;
     if (firstOutput.context) {
@@ -60,11 +55,9 @@ Remember: Return ONLY the raw JSON object with no markdown, no code fences, no e
     } else if (typeof firstOutput === 'string') {
       raw = firstOutput;
     } else {
-      console.log("[AI] Available keys in firstOutput:", Object.keys(firstOutput));
       throw new Error("Could not find response content in AI output");
     }
 
-    console.log("[AI] Raw response:", raw);
 
     // Handle code fence format if present
     let jsonString = raw;
@@ -81,7 +74,6 @@ Remember: Return ONLY the raw JSON object with no markdown, no code fences, no e
       }
     }
 
-    console.log("[AI] Extracted JSON string:", jsonString);
 
     // Try to parse the JSON string
     const result = JSON.parse(jsonString);
@@ -97,7 +89,6 @@ Remember: Return ONLY the raw JSON object with no markdown, no code fences, no e
       result.priority = "medium";
     }
 
-    console.log("[AI] Parsed response:", result);
     return result;
 
   } catch (e) {
