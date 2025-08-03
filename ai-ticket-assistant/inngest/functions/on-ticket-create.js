@@ -10,12 +10,12 @@ export const onTicketCreated = inngest.createFunction(
   { event: "ticket/created" },
   async ({ event, step }) => {
     try {
-      console.log("[Inngest] on-ticket-created function triggered", event.data);
+      // console.log("[Inngest] on-ticket-created function triggered", event.data);
       const { ticketId } = event.data;
 
       //fetch ticket from DB
       const ticket = await step.run("fetch-ticket", async () => {
-        console.log("[Inngest] Step: fetch-ticket", ticketId);
+        // console.log("[Inngest] Step: fetch-ticket", ticketId);
         const ticketObject = await Ticket.findById(ticketId);
         if (!ticketObject) {
           throw new NonRetriableError("Ticket not found");
